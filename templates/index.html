@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload & Generate Embeddings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+
+<div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">📁 Upload CSV/JSON & Save Embeddings</h1>
+
+    <!-- Success/Error Message -->
+    {% if message %}
+        <div class="mb-4 p-3 rounded 
+                    {% if '✅' in message %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <!-- Upload Form -->
+    <form action="/" enctype="multipart/form-data" method="post" class="flex flex-col gap-4">
+        <input type="file" name="file" class="border border-gray-300 rounded px-3 py-2" required>
+        <button type="submit" class="bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition">
+            Upload & Save Embeddings
+        </button>
+    </form>
+</div>
+
+</body>
+</html>
