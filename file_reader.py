@@ -5,11 +5,6 @@ from pathlib import Path
 
 
 def load_file(file_path: str):
-    """
-    Reads a CSV or JSON file and returns Python data.
-    This function is ready to be integrated with FastAPI.
-    """
-
     path = Path(file_path)
 
     # 1. Check if file exists
