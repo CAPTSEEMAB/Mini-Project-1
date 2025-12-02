@@ -1,0 +1,6 @@
+product_id,warehouse_location,current_stock,reorder_level,last_updated
+P001,Warehouse A,25,10,2025-11-18
+P002,Warehouse B,15,5,2025-11-18
+P003,Warehouse A,8,15,2025-11-17
+P004,Warehouse C,12,8,2025-11-18
+P005,Warehouse B,30,20,2025-11-17

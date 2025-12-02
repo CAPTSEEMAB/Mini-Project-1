@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat with Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+<div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
+    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Chat with Your Data</h1>
+    
+    <div id="chat-messages" class="h-96 overflow-y-auto border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
+        <div class="text-gray-500 text-center">Ask a question about your uploaded data...</div>
+    </div>
+    
+    <form id="chat-form" class="flex gap-2">
+        <input 
+            type="text" 
+            id="question" 
+            name="question" 
+            placeholder="e.g., What is the price of Dell laptop?" 
+            class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+        >
+        <button 
+            type="submit" 
+            class="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-600 transition"
+        >
+            Send
+        </button>
+    </form>
+    
+    <div class="mt-4 text-center">
+        <a href="/" class="text-blue-500 hover:underline">← Back to Upload</a>
+    </div>
+</div>
+
+<script>
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const questionInput = document.getElementById('question');
+    
+    function addMessage(content, isUser) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `mb-3 p-3 rounded-lg ${isUser ? 'bg-blue-100 ml-8' : 'bg-green-100 mr-8'}`;
+        msgDiv.innerHTML = `
+            <div class="font-semibold text-sm ${isUser ? 'text-blue-600' : 'text-green-600'}">
+                ${isUser ? 'Me' : 'Assistant'}
+            </div>
+            <div class="mt-1">${content}</div>
+        `;
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = questionInput.value.trim();
+        if (!question) return;
+        
+        if (chatMessages.querySelector('.text-gray-500')) {
+            chatMessages.innerHTML = '';
+        }
+        
+        addMessage(question, true);
+        questionInput.value = '';
+        
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({question: question})
+            });
+            const data = await response.json();
+            addMessage(data.answer.replace(/\n/g, '<br>'), false);
+        } catch (error) {
+            addMessage('Error: Could not get response', false);
+        }
+    });
+</script>
+
+</body>
+</html>
